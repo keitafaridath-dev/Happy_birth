@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Baby ❤️</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+        /* CSS Variables */
+        :root {
+            --bg-color: #fff0f5; /* LavenderBlush */
+            --primary-pink: #ffb6c1; /* LightPink */
+            --dark-pink: #ff69b4; /* HotPink */
+            --text-color: #555;
+            --white: #ffffff;
+            --font-family: 'Quicksand', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Floating Hearts Animation */
+        .hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .heart-bg {
+            position: absolute;
+            color: var(--primary-pink);
+            font-size: 20px;
+            animation: float 10s linear infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        /* Container & Layout */
+        .wrapper {
+            position: relative;
+            z-index: 10;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* --------- Lock Page --------- */
+        #lock-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 1s ease, visibility 1s;
+        }
+
+        .lock-box {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.1);
+            text-align: center;
+            max-width: 90%;
+            width: 400px;
+        }
+
+        .lock-box h2 {
+            color: var(--dark-pink);
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+        }
+
+        .lock-box input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--primary-pink);
+            border-radius: 25px;
+            outline: none;
+            font-size: 1rem;
+            font-family: var(--font-family);
+            text-align: center;
+            margin-bottom: 20px;
+            transition: border-color 0.3s;
+        }
+
+        .lock-box input:focus {
+            border-color: var(--dark-pink);
+        }
+
+        .btn {
+            background-color: var(--primary-pink);
+            color: var(--white);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            font-family: var(--font-family);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 182, 193, 0.5);
+        }
+
+        .btn:hover {
+            background-color: var(--dark-pink);
+            transform: translateY(-2px);
+        }
+
+        /* Custom Alert */
+        #custom-alert {
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--white);
+            border: 2px solid var(--dark-pink);
+            color: var(--dark-pink);
+            padding: 15px 30px;
+            border-radius: 20px;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: top 0.4s ease;
+            z-index: 1100;
+        }
+
+        #custom-alert.show {
+            top: 20px;
+        }
+
+        /* --------- Main Interface --------- */
+        #main-content {
+            display: none;
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+            animation: fadeIn 1s ease forwards;
+            opacity: 0;
+            flex: 1;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            margin-top: 20px;
+        }
+
+        header h1 {
+            color: var(--dark-pink);
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            color: #888;
+            font-size: 1.1rem;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .nav-btn {
+            background: var(--white);
+            border: 2px solid var(--primary-pink);
+            color: var(--dark-pink);
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: var(--font-family);
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .nav-btn.active, .nav-btn:hover {
+            background: var(--primary-pink);
+            color: var(--white);
+        }
+
+        /* Tabs Content */
+        .tab-content {
+            display: none;
+            background: var(--white);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.05);
+            min-height: 300px;
+            animation: slideUp 0.4s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Love Zone */
+        .love-zone {
+            text-align: center;
+        }
+
+        #love-text-container {
+            display: none;
+            margin-top: 30px;
+            text-align: left;
+            padding: 20px;
+            background: var(--bg-color);
+            border-radius: 15px;
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid var(--primary-pink);
+            line-height: 1.8;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        #love-text-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        #love-text-container::-webkit-scrollbar-thumb {
+            background: var(--primary-pink);
+            border-radius: 10px;
+        }
+
+        .signature {
+            display: block;
+            margin-top: 20px;
+            font-style: italic;
+            font-weight: bold;
+            color: var(--dark-pink);
+            text-align: right;
+        }
+
+        /* Music */
+        .song-list {
+            list-style: none;
+        }
+
+        .song-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            transition: background 0.3s;
+            border-radius: 10px;
+        }
+
+        .song-item:hover {
+            background: var(--bg-color);
+        }
+
+        .play-icon {
+            background: var(--primary-pink);
+            color: var(--white);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 182, 193, 0.5);
+            transition: transform 0.2s;
+        }
+
+        .play-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .song-info {
+            flex: 1;
+        }
+
+        .song-title {
+            font-weight: 600;
+            color: var(--dark-pink);
+            margin-bottom: 4px;
+        }
+
+        .song-artist {
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        /* Gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            aspect-ratio: 1;
+            background-color: var(--bg-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color 0.3s;
+        }
+        
+        .gallery-item:hover {
+            border-color: var(--primary-pink);
+        }
+
+        .img-placeholder {
+            color: var(--primary-pink);
+            font-size: 2rem;
+            position: absolute;
+            z-index: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .img-placeholder span {
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .gallery-item:hover .gallery-img {
+            transform: scale(1.05);
+        }
+
+        .caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 8px;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--dark-pink);
+            transform: translateY(100%);
+            transition: transform 0.3s;
+            z-index: 10;
+        }
+
+        .gallery-item:hover .caption {
+            transform: translateY(0);
+        }
+
+        /* Notes */
+        .notes-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .note-item {
+            background: var(--bg-color);
+            padding: 15px 20px;
+            border-radius: 15px;
+            border-left: 4px solid var(--primary-pink);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            transition: transform 0.2s;
+        }
+
+        .note-item:hover {
+            transform: translateX(5px);
+        }
+
+        .note-icon {
+            font-size: 1.5rem;
+            color: var(--dark-pink);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        footer span {
+            color: var(--dark-pink);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            .nav-btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+            .tab-content {
+                padding: 20px;
+            }
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .lock-box {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Audio -->
+    <audio id="bg-music" loop>
+        <source src="../Joyeux anniversaire/audio/krasnoshchok-happy-birthday-486360.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Floating Background Hearts -->
+    <div class="hearts-container" id="hearts-container"></div>
+
+    <!-- Alert -->
+    <div id="custom-alert">Oops! Wrong magic word, princess ❤️</div>
+
+    <!-- 1. Lock Screen -->
+    <div id="lock-screen">
+        <div class="lock-box">
+            <h2>Hey pretty, what's the magic word? ❤️</h2>
+            <!-- Entrer le mot de passe "princess" pour ouvrir le site -->
+            <input type="password" id="password-input" placeholder="Type here...">
+            <br>
+            <button class="btn" onclick="checkPassword()">Enter</button>
+        </div>
+        <footer>Made with <span>❤️</span> all my love</footer>
+    </div>
+
+    <!-- 2. Main Interface -->
+    <div class="wrapper">
+        <div id="main-content">
+            <header>
+                <h1>For My Beautiful Girl ❤️</h1>
+                <p>A special place just for you</p>
+            </header>
+
+            <nav>
+                <button class="nav-btn active" onclick="openTab('love-zone')">Love Zone</button>
+                <button class="nav-btn" onclick="openTab('music')">Music</button>
+                <button class="nav-btn" onclick="openTab('gallery')">Gallery</button>
+                <button class="nav-btn" onclick="openTab('notes')">Notes</button>
+            </nav>
+
+            <!-- Tab: Love Zone -->
+            <div id="love-zone" class="tab-content active love-zone">
+                <button class="btn" id="reveal-btn" onclick="revealLoveText()">I love you</button>
+                <div id="love-text-container">
+                    <p>Ma Cherie,<br><br>
+                        En ce jour si spécial, je voulais prendre un moment pour te dire à quel point tu es précieuse à mes yeux. On a partagé des rires incontrôlables, des larmes silencieuses, et tellement de souvenirs que je ne pourrais même plus les compter.
+                        Merci de ne jamais me juger, de m'écouter quand tout va mal et de célébrer mes victoires comme si c'étaient les tiennes. Tu n'es pas seulement ma meilleure amie, tu es la sœur que j'ai choisie et mon repère quand je me perds.
+                        Que cette nouvelle année t'apporte autant de lumière que tu en diffuses autour de toi. Je te promets d'être là pour chaque étape, chaque projet et chaque nouveau rêve. Très bel anniversaire, je t'aime de tout mon cœur. ❤️".<br>
+                    </p>
+                    <span class="signature">- Piriri</span>
+                </div>
+            </div>
+
+            <!-- Tab: Music -->
+            <div id="music" class="tab-content">
+                <ul class="song-list">
+                    <li class="song-item">
+                        <div class="play-icon">▶</div>
+                        <div class="song-info">
+                            <div class="song-title">Until I Found You</div>
+                            <div class="song-artist">Stephen Sanchez</div>
+                        </div>
+                    </li>
+                    <li class="song-item">
+                        <div class="play-icon">▶</div>
+                        <div class="song-info">
+                            <div class="song-title">Perfect</div>
+                            <div class="song-artist">Ed Sheeran</div>
+                        </div>
+                    </li>
+                    <li class="song-item">
+                        <div class="play-icon">▶</div>
+                        <div class="song-info">
+                            <div class="song-title">Just The Way You Are</div>
+                            <div class="song-artist">Bruno Mars</div>
+                        </div>
+                    </li>
+                    <li class="song-item">
+                        <div class="play-icon">▶</div>
+                        <div class="song-info">
+                            <div class="song-title">Lover</div>
+                            <div class="song-artist">Taylor Swift</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Tab: Gallery -->
+            <div id="gallery" class="tab-content">
+                <p style="text-align: center; margin-bottom: 20px; color: #888;"></p>
+                <div class="gallery-grid">
+                    <!-- Image 1 -->
+                    <div class="gallery-item">
+                        <div class="img-placeholder">📷<span>Image 1</span></div>
+                        <img src="../Joyeux anniversaire/assets/image/image1.jpeg" alt="My favorite smile" class="gallery-img">
+                        <div class="caption">My favorite smile</div>
+                    </div>
+                    <!-- Image 2 -->
+                    <div class="gallery-item">
+                        <div class="img-placeholder">📷<span>Image 2</span></div>
+                        <img src="../Joyeux anniversaire/assets/image/imge5.jpeg" alt="Movie Date" class="gallery-img">
+                        <div class="caption">Movie Date</div>
+                    </div>
+                    <!-- Image 3 -->
+                    <div class="gallery-item">
+                        <div class="img-placeholder">📷<span>Image 3</span></div>
+                        <img src="../Joyeux anniversaire/assets/image/image2.jpeg" alt="Beautiful day" class="gallery-img">
+                        <div class="caption">Beautiful day</div>
+                    </div>
+                    <!-- Image 4 -->
+                    <div class="gallery-item">
+                        <div class="img-placeholder">📷<span>Image 4</span></div>
+                        <img src="../Joyeux anniversaire/assets/image/image4.jpeg" alt="Just us" class="gallery-img">
+                        <div class="caption">Just us</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab: Notes -->
+            <div id="notes" class="tab-content">
+                <div class="notes-list">
+                    <div class="note-item">
+                        <div class="note-icon">💧</div>
+                        <div>Happy Birthday to You 💧</div>
+                    </div>
+                    <div class="note-item">
+                        <div class="note-icon">💖</div>
+                        <div>Dieu savait que j'avais besoin d'une amie comme Toi.</div>
+                    </div>
+                    <div class="note-item">
+                        <div class="note-icon">🌙</div>
+                        <div>Ma narcissique Préférée.</div>
+                    </div>
+                    <div class="note-item">
+                        <div class="note-icon">😊</div>
+                        <div>Your smile is the best part of my day. Keep smiling!</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <footer>Made with <span>❤️</span> all my First Wife</footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // --- 1. Background Hearts Effect ---
+        function createHearts() {
+            const container = document.getElementById('hearts-container');
+            const numHearts = 35; // Number of floating hearts
+            
+            for (let i = 0; i < numHearts; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart-bg');
+                heart.innerHTML = '❤️';
+                
+                // Random position and animation properties
+                const left = Math.random() * 100;
+                const animDuration = Math.random() * 15 + 10; // 10s to 25s
+                const delay = Math.random() * 20;
+                const size = Math.random() * 10 + 10; // 10px to 20px
+
+                heart.style.left = `${left}vw`;
+                heart.style.animationDuration = `${animDuration}s`;
+                heart.style.animationDelay = `-${delay}s`;
+                heart.style.fontSize = `${size}px`;
+                
+                container.appendChild(heart);
+            }
+        }
+        createHearts();
+
+        // --- 2. Lock Screen Logic ---
+        function checkPassword() {
+            const input = document.getElementById('password-input').value.trim().toLowerCase();
+            const alertBox = document.getElementById('custom-alert');
+            const bgMusic = document.getElementById('bg-music');
+            
+            // Mot magique : "princess"
+            if (input === 'princess') {
+                // Correct Password: Fade out lock screen, show main content
+                const lockScreen = document.getElementById('lock-screen');
+                lockScreen.style.opacity = '0';
+                
+                // Play the background music
+                bgMusic.play().catch(error => {
+                    console.log("Lecture automatique bloquée par le navigateur :", error);
+                });
+
+                setTimeout(() => {
+                    lockScreen.style.visibility = 'hidden';
+                    document.getElementById('main-content').style.display = 'block';
+                }, 1000); // Wait for transition
+            } else {
+                // Wrong Password: Show Alert
+                alertBox.classList.add('show');
+                setTimeout(() => {
+                    alertBox.classList.remove('show');
+                }, 3000); // Hide after 3 seconds
+            }
+        }
+
+        // Add Enter key support
+        document.getElementById('password-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        // --- 3. Tabs Navigation ---
+        function openTab(tabId) {
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            // Hide all tab contents
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show the selected tab and set button as active
+            document.getElementById(tabId).classList.add('active');
+            
+            // Find the clicked button and add 'active' class
+            const currentBtn = event.currentTarget || event.target;
+            currentBtn.classList.add('active');
+        }
+
+        // --- 4. Love Zone Magic Button ---
+        function revealLoveText() {
+            const btn = document.getElementById('reveal-btn');
+            const textContainer = document.getElementById('love-text-container');
+            
+            btn.style.display = 'none';
+            textContainer.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
